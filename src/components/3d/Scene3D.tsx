@@ -18,11 +18,6 @@ const productColors: Record<string, string> = {
   "1": "#C4A574", // Traditional - warm beige
   "2": "#7B9E6B", // Matcha - green
   "3": "#6B4423", // Cacao - brown
-  "4": "#E8B86D", // Ginger - golden
-  "5": "#8FBC8B", // Pandan - light green
-  "6": "#F5F5DC", // Coconut - cream
-  "7": "#3D3D3D", // Sesame - dark
-  "8": "#D2691E", // Peanut - brown
 };
 
 const Scene3D = ({ products, boxItems, onAddItem, selectedCount, maxItems }: Scene3DProps) => {
