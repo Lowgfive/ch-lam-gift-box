@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import {
   QrCode,
-  Printer,
   Upload,
   Save,
   Heart,
@@ -19,7 +18,6 @@ const ECard = () => {
     senderName: "",
     receiverName: "",
     message: "",
-    printCard: false,
     generateQR: true,
     uploadVideo: false,
   });
@@ -124,23 +122,6 @@ const ECard = () => {
                 <div className="space-y-4">
                   <p className="text-sm font-medium text-foreground">Tùy chọn</p>
 
-                  <label className="flex items-center gap-3 p-4 rounded-xl bg-cream hover:bg-cream/80 transition-colors cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={formData.printCard}
-                      onChange={(e) =>
-                        setFormData({ ...formData, printCard: e.target.checked })
-                      }
-                      className="w-5 h-5 rounded border-border text-primary focus:ring-primary"
-                    />
-                    <Printer className="w-5 h-5 text-primary" />
-                    <div className="flex-1">
-                      <span className="font-medium text-foreground">In thiệp giấy</span>
-                      <p className="text-sm text-muted-foreground">
-                        Gửi kèm thiệp giấy trong hộp quà
-                      </p>
-                    </div>
-                  </label>
 
                   <label className="flex items-center gap-3 p-4 rounded-xl bg-cream hover:bg-cream/80 transition-colors cursor-pointer">
                     <input
