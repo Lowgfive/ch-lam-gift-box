@@ -82,12 +82,13 @@ const CheLamCube = ({
         />
       </mesh>
       <Text
-        position={[position[0], position[1] - 0.8, position[2]]}
-        fontSize={0.2}
+        position={[position[0], position[1] + 0.7, position[2]]}
+        fontSize={0.18}
         color="#4A3728"
         anchorX="center"
         anchorY="middle"
         maxWidth={1.5}
+        fontWeight="bold"
       >
         {name}
       </Text>

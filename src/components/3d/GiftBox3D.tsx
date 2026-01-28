@@ -1,13 +1,17 @@
 import { useRef } from "react";
-import { Mesh, BoxGeometry, MeshStandardMaterial } from "three";
 
 interface GiftBox3DProps {
   filledSlots: (string | null)[];
 }
 
-const GiftBox3D = ({ filledSlots }: GiftBox3DProps) => {
-  const boxRef = useRef<Mesh>(null);
+// Product color mapping
+const productColors: Record<string, string> = {
+  "1": "#C4A574", // Traditional - warm beige
+  "2": "#7B9E6B", // Matcha - green
+  "3": "#6B4423", // Cacao - brown
+};
 
+const GiftBox3D = ({ filledSlots }: GiftBox3DProps) => {
   const boxWidth = 6;
   const boxDepth = 6;
   const boxHeight = 1.5;
@@ -17,7 +21,6 @@ const GiftBox3D = ({ filledSlots }: GiftBox3DProps) => {
   // Colors
   const boxColor = "#8B5A2B"; // Warm brown
   const innerColor = "#D2B48C"; // Tan/cream
-  const filledColor = "#4A7C59"; // Green for filled slots
 
   // Calculate slot positions (3x3 grid)
   const slotSize = (boxWidth - wallThickness * 2 - dividerThickness * 2) / 3;
@@ -83,14 +86,15 @@ const GiftBox3D = ({ filledSlots }: GiftBox3DProps) => {
         );
       })}
 
-      {/* Slot indicators - show filled slots */}
+      {/* Slot indicators - show filled slots with correct product colors */}
       {filledSlots.map((productId, index) => {
         if (!productId) return null;
         const [x, y, z] = getSlotPosition(index);
+        const cubeColor = productColors[productId] || "#C4A574";
         return (
           <mesh key={`slot-${index}`} position={[x, y + 0.4, z]} castShadow>
             <boxGeometry args={[slotSize * 0.85, 0.8, slotSize * 0.85]} />
-            <meshStandardMaterial color={filledColor} />
+            <meshStandardMaterial color={cubeColor} roughness={0.3} metalness={0.1} />
           </mesh>
         );
       })}
