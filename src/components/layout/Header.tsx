@@ -25,7 +25,7 @@ const Header = () => {
               <Gift className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="font-display text-xl md:text-2xl font-semibold text-primary">
-              Chè Lam
+              Lam Nhí
             </span>
           </Link>
 
