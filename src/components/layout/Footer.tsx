@@ -13,7 +13,7 @@ const Footer = () => {
                 <Gift className="w-5 h-5" />
               </div>
               <span className="font-display text-2xl font-semibold">
-                Chè Lam Gift Box
+                Lam Nhí
               </span>
             </div>
             <p className="text-primary-foreground/80 leading-relaxed">
@@ -91,7 +91,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-12 pt-8 border-t border-primary-foreground/20 text-center text-primary-foreground/60 text-sm">
-          © 2024 Chè Lam Gift Box. Tất cả quyền được bảo lưu.
+          © 2024 Lam Nhí. Tất cả quyền được bảo lưu.
         </div>
       </div>
     </footer>
