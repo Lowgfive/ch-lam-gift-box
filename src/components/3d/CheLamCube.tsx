@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import { useFrame, ThreeEvent } from "@react-three/fiber";
-import { Mesh, Vector3 } from "three";
+import { useFrame, useThree, ThreeEvent } from "@react-three/fiber";
+import { Mesh, Vector3, Plane, Raycaster, Vector2 } from "three";
 import { Text } from "@react-three/drei";
 
 interface CheLamCubeProps {
@@ -25,17 +25,39 @@ const CheLamCube = ({
   const meshRef = useRef<Mesh>(null);
   const [hovered, setHovered] = useState(false);
   const [localDragging, setLocalDragging] = useState(false);
+  const dragPlane = useRef(new Plane(new Vector3(0, 1, 0), -1.5));
+  const { camera, gl } = useThree();
 
   useFrame((state) => {
     if (meshRef.current) {
-      // Gentle floating animation when not dragging
-      if (!localDragging && !isDragging) {
-        meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2 + position[0]) * 0.05;
+      // When dragging, follow the mouse on the drag plane
+      if (localDragging) {
+        const raycaster = new Raycaster();
+        const mouse = new Vector2(
+          (state.pointer.x),
+          (state.pointer.y)
+        );
+        raycaster.setFromCamera(mouse, camera);
+        
+        const intersectPoint = new Vector3();
+        raycaster.ray.intersectPlane(dragPlane.current, intersectPoint);
+        
+        if (intersectPoint) {
+          meshRef.current.position.lerp(intersectPoint, 0.3);
+        }
+      } else if (!isDragging) {
+        // Return to original position with floating animation
+        const targetPos = new Vector3(
+          position[0],
+          position[1] + Math.sin(state.clock.elapsedTime * 2 + position[0]) * 0.05,
+          position[2]
+        );
+        meshRef.current.position.lerp(targetPos, 0.1);
         meshRef.current.rotation.y += 0.005;
       }
       
-      // Scale effect on hover
-      const targetScale = hovered ? 1.1 : 1;
+      // Scale effect on hover or drag
+      const targetScale = (hovered || localDragging) ? 1.15 : 1;
       meshRef.current.scale.lerp(new Vector3(targetScale, targetScale, targetScale), 0.1);
     }
   });
@@ -44,14 +66,21 @@ const CheLamCube = ({
     e.stopPropagation();
     setLocalDragging(true);
     onDragStart?.(productId);
-    document.body.style.cursor = "grabbing";
+    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    gl.domElement.style.cursor = "grabbing";
   };
 
   const handlePointerUp = (e: ThreeEvent<PointerEvent>) => {
     if (localDragging && meshRef.current) {
       setLocalDragging(false);
-      onDragEnd?.(productId, meshRef.current.position);
-      document.body.style.cursor = "auto";
+      onDragEnd?.(productId, meshRef.current.position.clone());
+      gl.domElement.style.cursor = "auto";
+    }
+  };
+
+  const handlePointerMove = (e: ThreeEvent<PointerEvent>) => {
+    if (localDragging) {
+      e.stopPropagation();
     }
   };
 
@@ -60,16 +89,18 @@ const CheLamCube = ({
       <mesh
         ref={meshRef}
         position={position}
-        onPointerOver={() => {
+        onPointerOver={(e) => {
+          e.stopPropagation();
           setHovered(true);
-          document.body.style.cursor = "grab";
+          gl.domElement.style.cursor = "grab";
         }}
-        onPointerOut={() => {
+        onPointerOut={(e) => {
           setHovered(false);
-          if (!localDragging) document.body.style.cursor = "auto";
+          if (!localDragging) gl.domElement.style.cursor = "auto";
         }}
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
+        onPointerMove={handlePointerMove}
         castShadow
       >
         <boxGeometry args={[0.9, 0.9, 0.9]} />
@@ -77,21 +108,23 @@ const CheLamCube = ({
           color={color}
           roughness={0.3}
           metalness={0.1}
-          emissive={hovered ? color : "#000000"}
-          emissiveIntensity={hovered ? 0.2 : 0}
+          emissive={hovered || localDragging ? color : "#000000"}
+          emissiveIntensity={hovered || localDragging ? 0.3 : 0}
         />
       </mesh>
-      <Text
-        position={[position[0], position[1] + 0.7, position[2]]}
-        fontSize={0.18}
-        color="#4A3728"
-        anchorX="center"
-        anchorY="middle"
-        maxWidth={1.5}
-        fontWeight="bold"
-      >
-        {name}
-      </Text>
+      {!localDragging && (
+        <Text
+          position={[position[0], position[1] + 0.7, position[2]]}
+          fontSize={0.18}
+          color="#4A3728"
+          anchorX="center"
+          anchorY="middle"
+          maxWidth={1.5}
+          fontWeight="bold"
+        >
+          {name}
+        </Text>
+      )}
     </group>
   );
 };
