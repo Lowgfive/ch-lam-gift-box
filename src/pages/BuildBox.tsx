@@ -24,13 +24,20 @@ const BuildBox = () => {
 
   const handleAddItem = (productId: string) => {
     if (selectedCount >= MAX_ITEMS) return;
-
     const emptyIndex = boxItems.findIndex((item) => item === null);
-    if (emptyIndex !== -1) {
-      const newItems = [...boxItems];
-      newItems[emptyIndex] = productId;
-      setBoxItems(newItems);
-    }
+    if (emptyIndex === -1) return;
+    const newItems = [...boxItems];
+    newItems[emptyIndex] = productId;
+    setBoxItems(newItems);
+  };
+
+  const handleDropItem = (productId: string, slotIndex: number) => {
+    if (selectedCount >= MAX_ITEMS) return;
+    if (slotIndex < 0 || slotIndex >= MAX_ITEMS) return;
+    if (boxItems[slotIndex] !== null) return;
+    const newItems = [...boxItems];
+    newItems[slotIndex] = productId;
+    setBoxItems(newItems);
   };
 
   const handleReset = () => {
@@ -83,7 +90,7 @@ const BuildBox = () => {
               <Scene3D
                 products={products}
                 boxItems={boxItems}
-                onAddItem={handleAddItem}
+                onDropItem={handleDropItem}
                 selectedCount={selectedCount}
                 maxItems={MAX_ITEMS}
               />
