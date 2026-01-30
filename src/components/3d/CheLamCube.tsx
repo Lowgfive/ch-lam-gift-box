@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useFrame, useThree, ThreeEvent } from "@react-three/fiber";
-import { Mesh, Vector3, Plane, Raycaster, Vector2 } from "three";
+import { Mesh, Vector3, Plane } from "three";
 import { Text } from "@react-three/drei";
 
 interface CheLamCubeProps {
@@ -25,26 +25,15 @@ const CheLamCube = ({
   const meshRef = useRef<Mesh>(null);
   const [hovered, setHovered] = useState(false);
   const [localDragging, setLocalDragging] = useState(false);
-  const dragPlane = useRef(new Plane(new Vector3(0, 1, 0), -1.5));
-  const { camera, gl } = useThree();
+  const dragPlane = useRef(new Plane(new Vector3(0, 1, 0), 0));
+  const dragTarget = useRef<Vector3 | null>(null);
+  const { gl } = useThree();
 
   useFrame((state) => {
     if (meshRef.current) {
-      // When dragging, follow the mouse on the drag plane
-      if (localDragging) {
-        const raycaster = new Raycaster();
-        const mouse = new Vector2(
-          (state.pointer.x),
-          (state.pointer.y)
-        );
-        raycaster.setFromCamera(mouse, camera);
-        
-        const intersectPoint = new Vector3();
-        raycaster.ray.intersectPlane(dragPlane.current, intersectPoint);
-        
-        if (intersectPoint) {
-          meshRef.current.position.lerp(intersectPoint, 0.3);
-        }
+      // When dragging, follow the pointer target smoothly
+      if (localDragging && dragTarget.current) {
+        meshRef.current.position.lerp(dragTarget.current, 0.45);
       } else if (!isDragging) {
         // Return to original position with floating animation
         const targetPos = new Vector3(
@@ -66,6 +55,17 @@ const CheLamCube = ({
     e.stopPropagation();
     setLocalDragging(true);
     onDragStart?.(productId);
+
+    // Lock drag plane at the cube's current height to avoid vertical jitter
+    if (meshRef.current) {
+      const y = meshRef.current.position.y;
+      dragPlane.current.set(new Vector3(0, 1, 0), -y);
+    }
+
+    const point = new Vector3();
+    e.ray.intersectPlane(dragPlane.current, point);
+    dragTarget.current = point;
+
     (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
     gl.domElement.style.cursor = "grabbing";
   };
@@ -74,6 +74,7 @@ const CheLamCube = ({
     if (localDragging && meshRef.current) {
       setLocalDragging(false);
       onDragEnd?.(productId, meshRef.current.position.clone());
+      dragTarget.current = null;
       gl.domElement.style.cursor = "auto";
     }
   };
@@ -81,6 +82,10 @@ const CheLamCube = ({
   const handlePointerMove = (e: ThreeEvent<PointerEvent>) => {
     if (localDragging) {
       e.stopPropagation();
+
+      const point = new Vector3();
+      e.ray.intersectPlane(dragPlane.current, point);
+      dragTarget.current = point;
     }
   };
 

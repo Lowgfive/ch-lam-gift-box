@@ -9,7 +9,7 @@ import { Product } from "@/data/mockData";
 interface Scene3DProps {
   products: Product[];
   boxItems: (string | null)[];
-  onAddItem: (productId: string) => void;
+  onDropItem: (productId: string, slotIndex: number) => void;
   selectedCount: number;
   maxItems: number;
 }
@@ -20,7 +20,7 @@ const productColors: Record<string, string> = {
   "3": "#6B4423", // Cacao - brown
 };
 
-const Scene3D = ({ products, boxItems, onAddItem, selectedCount, maxItems }: Scene3DProps) => {
+const Scene3D = ({ products, boxItems, onDropItem, selectedCount, maxItems }: Scene3DProps) => {
   const [draggedProduct, setDraggedProduct] = useState<string | null>(null);
 
   const handleDragStart = useCallback((productId: string) => {
@@ -28,18 +28,59 @@ const Scene3D = ({ products, boxItems, onAddItem, selectedCount, maxItems }: Sce
   }, []);
 
   const handleDragEnd = useCallback((productId: string, position: Vector3) => {
-    // Check if dropped inside the box area (box is centered at origin, size 6x6)
-    const inBoxX = position.x > -3.5 && position.x < 3.5;
-    const inBoxZ = position.z > -3.5 && position.z < 3.5;
-    const nearBoxHeight = position.y < 3;
-    
-    if (inBoxX && inBoxZ && nearBoxHeight) {
-      if (selectedCount < maxItems) {
-        onAddItem(productId);
-      }
+    // GiftBox3D geometry constants (keep in sync)
+    const boxWidth = 6;
+    const boxDepth = 6;
+    const wallThickness = 0.1;
+    const dividerThickness = 0.08;
+
+    const innerMinX = -boxWidth / 2 + wallThickness;
+    const innerMaxX = boxWidth / 2 - wallThickness;
+    const innerMinZ = -boxDepth / 2 + wallThickness;
+    const innerMaxZ = boxDepth / 2 - wallThickness;
+
+    const inInner =
+      position.x > innerMinX &&
+      position.x < innerMaxX &&
+      position.z > innerMinZ &&
+      position.z < innerMaxZ &&
+      position.y < 3;
+
+    if (!inInner) {
+      setDraggedProduct(null);
+      return;
+    }
+
+    const slotSize = (boxWidth - wallThickness * 2 - dividerThickness * 2) / 3;
+    const cell = slotSize + dividerThickness;
+
+    const relX = position.x - innerMinX;
+    const relZ = position.z - innerMinZ;
+
+    const col = Math.floor(relX / cell);
+    const row = Math.floor(relZ / cell);
+
+    // outside grid
+    if (col < 0 || col > 2 || row < 0 || row > 2) {
+      setDraggedProduct(null);
+      return;
+    }
+
+    // reject drops on divider gaps
+    const inCellX = relX - col * cell;
+    const inCellZ = relZ - row * cell;
+    const isOnDivider = inCellX > slotSize || inCellZ > slotSize;
+    if (isOnDivider) {
+      setDraggedProduct(null);
+      return;
+    }
+
+    const slotIndex = row * 3 + col;
+    if (selectedCount < maxItems && boxItems[slotIndex] === null) {
+      onDropItem(productId, slotIndex);
     }
     setDraggedProduct(null);
-  }, [onAddItem, selectedCount, maxItems]);
+  }, [onDropItem, selectedCount, maxItems, boxItems]);
 
   return (
     <div className="w-full h-[500px] md:h-[600px] rounded-2xl overflow-hidden bg-gradient-to-b from-cream to-background">
