@@ -141,8 +141,9 @@ const Scene3D = ({ products, boxItems, onDropItem, selectedCount, maxItems }: Sc
           {/* Environment for nice reflections */}
           <Environment preset="apartment" />
 
-          {/* Controls */}
+          {/* Controls - disabled when dragging */}
           <OrbitControls
+            enabled={!draggedProduct}
             enablePan={false}
             minDistance={8}
             maxDistance={20}

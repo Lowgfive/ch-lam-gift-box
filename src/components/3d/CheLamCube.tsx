@@ -26,15 +26,12 @@ const CheLamCube = ({
   const [hovered, setHovered] = useState(false);
   const [localDragging, setLocalDragging] = useState(false);
   const dragPlane = useRef(new Plane(new Vector3(0, 1, 0), 0));
-  const dragTarget = useRef<Vector3 | null>(null);
+  const dragOffset = useRef(new Vector3()); // Offset from click point to cube center
   const { gl } = useThree();
 
   useFrame((state) => {
     if (meshRef.current) {
-      // When dragging, follow the pointer target smoothly
-      if (localDragging && dragTarget.current) {
-        meshRef.current.position.lerp(dragTarget.current, 0.45);
-      } else if (!isDragging) {
+      if (!localDragging && !isDragging) {
         // Return to original position with floating animation
         const targetPos = new Vector3(
           position[0],
@@ -53,20 +50,25 @@ const CheLamCube = ({
 
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
+    
+    if (!meshRef.current) return;
+    
+    // Lock drag plane at the cube's current height
+    const y = meshRef.current.position.y;
+    dragPlane.current.set(new Vector3(0, 1, 0), -y);
+    
+    // Calculate click point on plane
+    const clickPoint = new Vector3();
+    e.ray.intersectPlane(dragPlane.current, clickPoint);
+    
+    // Store offset: cube center - click point (so cube stays under mouse)
+    dragOffset.current.copy(meshRef.current.position).sub(clickPoint);
+    
     setLocalDragging(true);
     onDragStart?.(productId);
-
-    // Lock drag plane at the cube's current height to avoid vertical jitter
-    if (meshRef.current) {
-      const y = meshRef.current.position.y;
-      dragPlane.current.set(new Vector3(0, 1, 0), -y);
-    }
-
-    const point = new Vector3();
-    e.ray.intersectPlane(dragPlane.current, point);
-    dragTarget.current = point;
-
-    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    
+    // Capture pointer for smooth dragging
+    (gl.domElement as HTMLElement).setPointerCapture(e.pointerId);
     gl.domElement.style.cursor = "grabbing";
   };
 
@@ -74,18 +76,24 @@ const CheLamCube = ({
     if (localDragging && meshRef.current) {
       setLocalDragging(false);
       onDragEnd?.(productId, meshRef.current.position.clone());
-      dragTarget.current = null;
+      (gl.domElement as HTMLElement).releasePointerCapture(e.pointerId);
       gl.domElement.style.cursor = "auto";
     }
   };
 
   const handlePointerMove = (e: ThreeEvent<PointerEvent>) => {
-    if (localDragging) {
+    if (localDragging && meshRef.current) {
       e.stopPropagation();
-
+      
+      // Get intersection point on drag plane
       const point = new Vector3();
       e.ray.intersectPlane(dragPlane.current, point);
-      dragTarget.current = point;
+      
+      // Apply offset to keep cube under mouse where user clicked
+      point.add(dragOffset.current);
+      
+      // Move cube directly (instant, no lerp for responsiveness)
+      meshRef.current.position.copy(point);
     }
   };
 
@@ -97,7 +105,7 @@ const CheLamCube = ({
         onPointerOver={(e) => {
           e.stopPropagation();
           setHovered(true);
-          gl.domElement.style.cursor = "grab";
+          if (!localDragging) gl.domElement.style.cursor = "grab";
         }}
         onPointerOut={(e) => {
           setHovered(false);
