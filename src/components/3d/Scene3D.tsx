@@ -57,20 +57,21 @@ const Scene3D = ({ products, boxItems, onDropItem, selectedCount, maxItems }: Sc
     const relX = position.x - innerMinX;
     const relZ = position.z - innerMinZ;
 
-    const col = Math.floor(relX / cell);
-    const row = Math.floor(relZ / cell);
+    // Snap to nearest slot center (more forgiving + more accurate)
+    const col = Math.round((relX - slotSize / 2) / cell);
+    const row = Math.round((relZ - slotSize / 2) / cell);
 
-    // outside grid
     if (col < 0 || col > 2 || row < 0 || row > 2) {
       setDraggedProduct(null);
       return;
     }
 
-    // reject drops on divider gaps
-    const inCellX = relX - col * cell;
-    const inCellZ = relZ - row * cell;
-    const isOnDivider = inCellX > slotSize || inCellZ > slotSize;
-    if (isOnDivider) {
+    const centerX = col * cell + slotSize / 2;
+    const centerZ = row * cell + slotSize / 2;
+    const dx = Math.abs(relX - centerX);
+    const dz = Math.abs(relZ - centerZ);
+    const hitTolerance = slotSize * 0.55; // must be within slot area (reject divider zones)
+    if (dx > hitTolerance || dz > hitTolerance) {
       setDraggedProduct(null);
       return;
     }

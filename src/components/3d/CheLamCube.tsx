@@ -27,11 +27,16 @@ const CheLamCube = ({
   const [localDragging, setLocalDragging] = useState(false);
   const dragPlane = useRef(new Plane(new Vector3(0, 1, 0), 0));
   const dragOffset = useRef(new Vector3()); // Offset from click point to cube center
+  const dragTarget = useRef(new Vector3());
+  const tmpPoint = useRef(new Vector3());
   const { gl } = useThree();
 
   useFrame((state) => {
     if (meshRef.current) {
-      if (!localDragging && !isDragging) {
+      if (localDragging) {
+        // Follow latest pointer target (frame-driven => smoother when pointer moves fast)
+        meshRef.current.position.lerp(dragTarget.current, 0.75);
+      } else if (!isDragging) {
         // Return to original position with floating animation
         const targetPos = new Vector3(
           position[0],
@@ -58,11 +63,14 @@ const CheLamCube = ({
     dragPlane.current.set(new Vector3(0, 1, 0), -y);
     
     // Calculate click point on plane
-    const clickPoint = new Vector3();
+    const clickPoint = tmpPoint.current;
     e.ray.intersectPlane(dragPlane.current, clickPoint);
     
     // Store offset: cube center - click point (so cube stays under mouse)
     dragOffset.current.copy(meshRef.current.position).sub(clickPoint);
+
+    // Init target immediately to avoid first-frame jump
+    dragTarget.current.copy(clickPoint).add(dragOffset.current);
     
     setLocalDragging(true);
     onDragStart?.(productId);
@@ -86,14 +94,11 @@ const CheLamCube = ({
       e.stopPropagation();
       
       // Get intersection point on drag plane
-      const point = new Vector3();
+      const point = tmpPoint.current;
       e.ray.intersectPlane(dragPlane.current, point);
-      
+
       // Apply offset to keep cube under mouse where user clicked
-      point.add(dragOffset.current);
-      
-      // Move cube directly (instant, no lerp for responsiveness)
-      meshRef.current.position.copy(point);
+      dragTarget.current.copy(point).add(dragOffset.current);
     }
   };
 
