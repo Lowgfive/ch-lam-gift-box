@@ -28,8 +28,12 @@ const Scene3D = ({ products, boxItems, onAddItem, selectedCount, maxItems }: Sce
   }, []);
 
   const handleDragEnd = useCallback((productId: string, position: Vector3) => {
-    // Check if dropped near the box (simple distance check)
-    if (position.x > -4 && position.x < 4 && position.z > -4 && position.z < 4 && position.y < 3) {
+    // Check if dropped inside the box area (box is centered at origin, size 6x6)
+    const inBoxX = position.x > -3.5 && position.x < 3.5;
+    const inBoxZ = position.z > -3.5 && position.z < 3.5;
+    const nearBoxHeight = position.y < 3;
+    
+    if (inBoxX && inBoxZ && nearBoxHeight) {
       if (selectedCount < maxItems) {
         onAddItem(productId);
       }
