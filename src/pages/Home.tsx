@@ -103,8 +103,14 @@ const Home = () => {
       </section>
 
       {/* Bestsellers */}
-      <section className="section-padding">
-        <div className="container-wide">
+      <section className="section-padding relative overflow-hidden">
+        {theme === "national" && (
+          <div className="absolute inset-0 z-0">
+            <img src="/assets/national-bg-1.jpg" alt="" className="w-full h-full object-cover opacity-10" />
+            <div className="absolute inset-0 bg-background/80" />
+          </div>
+        )}
+        <div className="container-wide relative z-10">
           <motion.div {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial" className="text-center mb-12">
             <span className="inline-block px-4 py-2 rounded-full bg-accent/20 text-accent font-medium text-sm mb-4">🔥 Bán chạy nhất</span>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
