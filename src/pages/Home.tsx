@@ -19,6 +19,7 @@ const fadeInUp = {
 
 const Home = () => {
   const { toast } = useToast();
+  const { theme } = useSeasonalTheme();
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
