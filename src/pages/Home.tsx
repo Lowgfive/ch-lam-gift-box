@@ -9,6 +9,7 @@ import storyImage from "@/assets/story-image.jpg";
 import qrIllustration from "@/assets/qr-illustration.jpg";
 import { useState, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
