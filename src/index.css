@@ -187,8 +187,12 @@
   }
 
   .season-national .seasonal-banner {
-    background: linear-gradient(90deg, hsl(0 75% 45%), hsl(0 60% 35%));
+    background: linear-gradient(90deg, hsl(0 75% 45%), hsl(0 60% 35%)), url('/assets/national-day-bg.jpg') center/cover;
     color: hsl(50 100% 50%);
+  }
+
+  .season-national {
+    background: linear-gradient(180deg, rgba(0 0% 100% / 0.95) 0%, rgba(200 100% 50% / 0.05) 100%);
   }
 
   .season-mid-autumn .seasonal-banner {
