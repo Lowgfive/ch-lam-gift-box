@@ -174,6 +174,27 @@
   }
 }
 
+  .seasonal-banner {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  .season-tet .seasonal-banner {
+    background: linear-gradient(90deg, hsl(0 65% 45%), hsl(0 55% 35%));
+  }
+
+  .season-valentine .seasonal-banner {
+    background: linear-gradient(90deg, hsl(340 60% 50%), hsl(330 70% 60%));
+  }
+
+  .season-national .seasonal-banner {
+    background: linear-gradient(90deg, hsl(0 75% 45%), hsl(0 60% 35%));
+    color: hsl(50 100% 50%);
+  }
+
+  .season-mid-autumn .seasonal-banner {
+    background: linear-gradient(90deg, hsl(25 60% 40%), hsl(35 80% 55%));
+  }
+
 @layer components {
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-terracotta;
