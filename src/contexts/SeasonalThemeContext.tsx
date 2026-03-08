@@ -27,7 +27,7 @@ const SEASONS: SeasonConfig[] = [
   },
   {
     id: "national",
-    label: "Mừng Ngày Lễ Lớn",
+    label: "Ngày lễ 30/4 - 1/5",
     emoji: "🇻🇳",
     banner: "🎉 Mừng 30/4 – 1/5 — Phiên bản đặc biệt giới hạn!",
     dateRanges: [{ start: [3, 20], end: [4, 5] }], // Apr 20 – May 5
