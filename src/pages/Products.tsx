@@ -5,9 +5,11 @@ import ProductCard from "@/components/ProductCard";
 import { products, categories, Product } from "@/data/mockData";
 import { useToast } from "@/hooks/use-toast";
 import { Search, SlidersHorizontal } from "lucide-react";
+import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
 
 const Products = () => {
   const { toast } = useToast();
+  const { theme } = useSeasonalTheme();
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"default" | "price-asc" | "price-desc">("default");
