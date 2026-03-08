@@ -5,9 +5,11 @@ import ProductCard from "@/components/ProductCard";
 import { products, categories, Product } from "@/data/mockData";
 import { useToast } from "@/hooks/use-toast";
 import { Search, SlidersHorizontal } from "lucide-react";
+import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
 
 const Products = () => {
   const { toast } = useToast();
+  const { theme } = useSeasonalTheme();
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"default" | "price-asc" | "price-desc">("default");
@@ -33,8 +35,14 @@ const Products = () => {
 
   return (
     <Layout>
-      <section className="section-padding min-h-screen">
-        <div className="container-wide">
+      <section className="section-padding min-h-screen relative overflow-hidden">
+        {theme === "national" && (
+          <div className="absolute inset-0 z-0">
+            <img src="/assets/national-bg-2.jpg" alt="" className="w-full h-full object-cover opacity-10" />
+            <div className="absolute inset-0 bg-background/85" />
+          </div>
+        )}
+        <div className="container-wide relative z-10">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

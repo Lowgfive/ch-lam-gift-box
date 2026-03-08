@@ -9,6 +9,7 @@ import storyImage from "@/assets/story-image.jpg";
 import qrIllustration from "@/assets/qr-illustration.jpg";
 import { useState, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -18,6 +19,7 @@ const fadeInUp = {
 
 const Home = () => {
   const { toast } = useToast();
+  const { theme } = useSeasonalTheme();
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -101,8 +103,14 @@ const Home = () => {
       </section>
 
       {/* Bestsellers */}
-      <section className="section-padding">
-        <div className="container-wide">
+      <section className="section-padding relative overflow-hidden">
+        {theme === "national" && (
+          <div className="absolute inset-0 z-0">
+            <img src="/assets/national-bg-1.jpg" alt="" className="w-full h-full object-cover opacity-10" />
+            <div className="absolute inset-0 bg-background/80" />
+          </div>
+        )}
+        <div className="container-wide relative z-10">
           <motion.div {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial" className="text-center mb-12">
             <span className="inline-block px-4 py-2 rounded-full bg-accent/20 text-accent font-medium text-sm mb-4">🔥 Bán chạy nhất</span>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -218,8 +226,14 @@ const Home = () => {
       </section>
 
       {/* QR Section */}
-      <section className="section-padding bg-cream">
-        <div className="container-wide">
+      <section className="section-padding bg-cream relative overflow-hidden">
+        {theme === "national" && (
+          <div className="absolute inset-0 z-0">
+            <img src="/assets/national-bg-3.jpg" alt="" className="w-full h-full object-cover opacity-[0.08]" />
+            <div className="absolute inset-0 bg-cream/85" />
+          </div>
+        )}
+        <div className="container-wide relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <motion.div {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial" className="space-y-6 order-2 lg:order-1">
               <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm">
