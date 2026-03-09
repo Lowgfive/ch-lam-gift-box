@@ -230,7 +230,7 @@ const Home = () => {
       </section>
 
       {/* QR Section */}
-      <section className="section-padding bg-cream/80 relative overflow-hidden">
+      <section className={`section-padding relative overflow-hidden ${theme !== "national" ? "bg-cream/80" : ""}`}>
         <div className="container-wide relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <motion.div {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial" className="space-y-6 order-2 lg:order-1">
