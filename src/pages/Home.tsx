@@ -10,6 +10,7 @@ import qrIllustration from "@/assets/qr-illustration.jpg";
 import { useState, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
+import { useCart } from "@/contexts/CartContext";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -27,7 +28,10 @@ const Home = () => {
   const specialEditions = products.filter((p) => p.category === "special").slice(0, 4);
   const combos = products.filter((p) => p.category === "combo");
 
+  const { addItem } = useCart();
+
   const handleAddToCart = (product: Product) => {
+    addItem(product);
     toast({
       title: "Đã thêm vào giỏ hàng",
       description: `${product.nameVi} đã được thêm vào giỏ hàng`,
@@ -139,7 +143,39 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Story / Storytelling Section */}
+      {/* Video Section */}
+      <section className="section-padding">
+        <div className="container-wide max-w-4xl mx-auto">
+          <motion.div {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial" className="text-center mb-8">
+            <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm mb-4">
+              <Play className="w-4 h-4 inline mr-2" />
+              Video giới thiệu
+            </span>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Khám phá <span className="text-primary">Lam Nhí</span>
+            </h2>
+          </motion.div>
+          <motion.div
+            {...fadeInUp}
+            viewport={{ once: true }}
+            whileInView="animate"
+            initial="initial"
+            className="rounded-2xl overflow-hidden shadow-elevated bg-card"
+          >
+            <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                title="Video giới thiệu Lam Nhí"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+              />
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       <section className={`section-padding ${theme !== "national" ? "bg-cream" : ""}`}>
         <div className="container-wide">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">

@@ -6,6 +6,7 @@ import { products, categories, Product } from "@/data/mockData";
 import { useToast } from "@/hooks/use-toast";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
+import { useCart } from "@/contexts/CartContext";
 
 const Products = () => {
   const { toast } = useToast();
@@ -26,7 +27,10 @@ const Products = () => {
       return 0;
     });
 
+  const { addItem } = useCart();
+
   const handleAddToCart = (product: Product) => {
+    addItem(product);
     toast({
       title: "Đã thêm vào giỏ hàng",
       description: `${product.nameVi} đã được thêm vào giỏ hàng`,
