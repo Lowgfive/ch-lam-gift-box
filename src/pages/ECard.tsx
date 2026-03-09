@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const ECard = () => {
   const { toast } = useToast();
+  const { theme } = useSeasonalTheme();
   const [formData, setFormData] = useState({
     senderName: "",
     receiverName: "",
