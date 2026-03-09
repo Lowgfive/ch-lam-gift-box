@@ -32,7 +32,14 @@ const ECard = () => {
 
   return (
     <Layout>
-      <section className="section-padding bg-gradient-hero min-h-screen">
+      {/* National Day Full Background */}
+      {theme === "national" && (
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <img src="/assets/national-bg-page1.jpg" alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-background/70" />
+        </div>
+      )}
+      <section className="section-padding bg-gradient-hero min-h-screen relative">
         <div className="container-wide">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

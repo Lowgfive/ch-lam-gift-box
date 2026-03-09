@@ -228,13 +228,7 @@ const Home = () => {
       </section>
 
       {/* QR Section */}
-      <section className="section-padding bg-cream relative overflow-hidden">
-        {theme === "national" && (
-          <div className="absolute inset-0 z-0">
-            <img src="/assets/national-bg-3.jpg" alt="" className="w-full h-full object-cover opacity-[0.08]" />
-            <div className="absolute inset-0 bg-cream/85" />
-          </div>
-        )}
+      <section className="section-padding bg-cream/80 relative overflow-hidden">
         <div className="container-wide relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <motion.div {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial" className="space-y-6 order-2 lg:order-1">
