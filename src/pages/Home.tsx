@@ -51,10 +51,12 @@ const Home = () => {
 
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center">
-        <div className="absolute inset-0">
-          <img src={heroBanner} alt="Chè lam Lam Nhí" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-transparent" />
-        </div>
+        {theme !== "national" && (
+          <div className="absolute inset-0">
+            <img src={heroBanner} alt="Chè lam Lam Nhí" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-transparent" />
+          </div>
+        )}
 
         <div className="container-wide px-4 md:px-8 relative z-10">
           <motion.div
