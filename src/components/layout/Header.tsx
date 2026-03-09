@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Gift, ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import CartDrawer from "@/components/CartDrawer";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,20 +41,20 @@ const Header = () => {
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-4">
-            <Link to="/products" className="btn-primary flex items-center gap-2">
+          <div className="flex items-center gap-2">
+            <CartDrawer />
+            <Link to="/products" className="hidden md:flex btn-primary items-center gap-2">
               <ShoppingBag className="w-4 h-4" />
               Đặt hàng
             </Link>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="md:hidden p-2 text-foreground"
+              aria-label="Toggle menu"
+            >
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
-
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-foreground"
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
         </div>
       </div>
 
