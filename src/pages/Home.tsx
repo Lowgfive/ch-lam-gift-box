@@ -10,6 +10,7 @@ import qrIllustration from "@/assets/qr-illustration.jpg";
 import { useState, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
+import { useCart } from "@/contexts/CartContext";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
