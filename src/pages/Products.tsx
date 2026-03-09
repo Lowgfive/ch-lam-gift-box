@@ -35,13 +35,14 @@ const Products = () => {
 
   return (
     <Layout>
+      {/* National Day Full Background */}
+      {theme === "national" && (
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <img src="/assets/national-bg-page2.png" alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-background/75" />
+        </div>
+      )}
       <section className="section-padding min-h-screen relative overflow-hidden">
-        {theme === "national" && (
-          <div className="absolute inset-0 z-0">
-            <img src="/assets/national-bg-2.jpg" alt="" className="w-full h-full object-cover opacity-10" />
-            <div className="absolute inset-0 bg-background/85" />
-          </div>
-        )}
         <div className="container-wide relative z-10">
           {/* Header */}
           <motion.div

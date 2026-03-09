@@ -41,6 +41,14 @@ const Home = () => {
 
   return (
     <Layout>
+      {/* National Day Full Background */}
+      {theme === "national" && (
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <img src="/assets/national-bg-page1.jpg" alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-background/75" />
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center">
         <div className="absolute inset-0">
@@ -104,12 +112,6 @@ const Home = () => {
 
       {/* Bestsellers */}
       <section className="section-padding relative overflow-hidden">
-        {theme === "national" && (
-          <div className="absolute inset-0 z-0">
-            <img src="/assets/national-bg-1.jpg" alt="" className="w-full h-full object-cover opacity-10" />
-            <div className="absolute inset-0 bg-background/80" />
-          </div>
-        )}
         <div className="container-wide relative z-10">
           <motion.div {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial" className="text-center mb-12">
             <span className="inline-block px-4 py-2 rounded-full bg-accent/20 text-accent font-medium text-sm mb-4">🔥 Bán chạy nhất</span>
@@ -226,13 +228,7 @@ const Home = () => {
       </section>
 
       {/* QR Section */}
-      <section className="section-padding bg-cream relative overflow-hidden">
-        {theme === "national" && (
-          <div className="absolute inset-0 z-0">
-            <img src="/assets/national-bg-3.jpg" alt="" className="w-full h-full object-cover opacity-[0.08]" />
-            <div className="absolute inset-0 bg-cream/85" />
-          </div>
-        )}
+      <section className="section-padding bg-cream/80 relative overflow-hidden">
         <div className="container-wide relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <motion.div {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial" className="space-y-6 order-2 lg:order-1">

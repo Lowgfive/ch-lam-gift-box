@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
@@ -14,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const ECard = () => {
   const { toast } = useToast();
+  const { theme } = useSeasonalTheme();
   const [formData, setFormData] = useState({
     senderName: "",
     receiverName: "",
@@ -32,7 +34,14 @@ const ECard = () => {
 
   return (
     <Layout>
-      <section className="section-padding bg-gradient-hero min-h-screen">
+      {/* National Day Full Background */}
+      {theme === "national" && (
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <img src="/assets/national-bg-page1.jpg" alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-background/70" />
+        </div>
+      )}
+      <section className="section-padding bg-gradient-hero min-h-screen relative">
         <div className="container-wide">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
