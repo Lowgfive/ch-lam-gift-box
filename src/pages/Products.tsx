@@ -27,7 +27,10 @@ const Products = () => {
       return 0;
     });
 
+  const { addItem } = useCart();
+
   const handleAddToCart = (product: Product) => {
+    addItem(product);
     toast({
       title: "Đã thêm vào giỏ hàng",
       description: `${product.nameVi} đã được thêm vào giỏ hàng`,
