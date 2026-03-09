@@ -41,7 +41,7 @@ const ECard = () => {
           <div className="absolute inset-0 bg-background/70" />
         </div>
       )}
-      <section className="section-padding bg-gradient-hero min-h-screen relative">
+      <section className={`section-padding min-h-screen relative ${theme !== "national" ? "bg-gradient-hero" : ""}`}>
         <div className="container-wide">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

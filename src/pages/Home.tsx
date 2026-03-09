@@ -51,10 +51,12 @@ const Home = () => {
 
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center">
-        <div className="absolute inset-0">
-          <img src={heroBanner} alt="Chè lam Lam Nhí" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-transparent" />
-        </div>
+        {theme !== "national" && (
+          <div className="absolute inset-0">
+            <img src={heroBanner} alt="Chè lam Lam Nhí" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-transparent" />
+          </div>
+        )}
 
         <div className="container-wide px-4 md:px-8 relative z-10">
           <motion.div
@@ -87,7 +89,7 @@ const Home = () => {
       </section>
 
       {/* Trust Badges */}
-      <section className="py-8 bg-cream">
+      <section className={`py-8 ${theme !== "national" ? "bg-cream" : ""}`}>
         <div className="container-wide px-4 md:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
@@ -138,7 +140,7 @@ const Home = () => {
       </section>
 
       {/* Story / Storytelling Section */}
-      <section className="section-padding bg-cream">
+      <section className={`section-padding ${theme !== "national" ? "bg-cream" : ""}`}>
         <div className="container-wide">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <motion.div {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial">
@@ -189,7 +191,7 @@ const Home = () => {
       </section>
 
       {/* Special Editions */}
-      <section className="section-padding bg-gradient-hero">
+      <section className={`section-padding ${theme !== "national" ? "bg-gradient-hero" : ""}`}>
         <div className="container-wide">
           <motion.div {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial" className="text-center mb-12">
             <span className="inline-block px-4 py-2 rounded-full bg-terracotta/10 text-terracotta font-medium text-sm mb-4">🎁 Phiên bản đặc biệt</span>
@@ -228,7 +230,7 @@ const Home = () => {
       </section>
 
       {/* QR Section */}
-      <section className="section-padding bg-cream/80 relative overflow-hidden">
+      <section className={`section-padding relative overflow-hidden ${theme !== "national" ? "bg-cream/80" : ""}`}>
         <div className="container-wide relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <motion.div {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial" className="space-y-6 order-2 lg:order-1">
