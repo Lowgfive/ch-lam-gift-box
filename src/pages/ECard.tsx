@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSeasonalTheme } from "@/contexts/SeasonalThemeContext";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
