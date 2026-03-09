@@ -191,7 +191,7 @@ const Home = () => {
       </section>
 
       {/* Special Editions */}
-      <section className="section-padding bg-gradient-hero">
+      <section className={`section-padding ${theme !== "national" ? "bg-gradient-hero" : ""}`}>
         <div className="container-wide">
           <motion.div {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial" className="text-center mb-12">
             <span className="inline-block px-4 py-2 rounded-full bg-terracotta/10 text-terracotta font-medium text-sm mb-4">🎁 Phiên bản đặc biệt</span>
