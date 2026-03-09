@@ -140,7 +140,7 @@ const Home = () => {
       </section>
 
       {/* Story / Storytelling Section */}
-      <section className="section-padding bg-cream">
+      <section className={`section-padding ${theme !== "national" ? "bg-cream" : ""}`}>
         <div className="container-wide">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <motion.div {...fadeInUp} viewport={{ once: true }} whileInView="animate" initial="initial">
