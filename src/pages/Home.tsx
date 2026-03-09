@@ -41,6 +41,14 @@ const Home = () => {
 
   return (
     <Layout>
+      {/* National Day Full Background */}
+      {theme === "national" && (
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <img src="/assets/national-bg-page1.jpg" alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-background/75" />
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center">
         <div className="absolute inset-0">
