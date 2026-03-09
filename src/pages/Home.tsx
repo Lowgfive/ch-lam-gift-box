@@ -28,7 +28,10 @@ const Home = () => {
   const specialEditions = products.filter((p) => p.category === "special").slice(0, 4);
   const combos = products.filter((p) => p.category === "combo");
 
+  const { addItem } = useCart();
+
   const handleAddToCart = (product: Product) => {
+    addItem(product);
     toast({
       title: "Đã thêm vào giỏ hàng",
       description: `${product.nameVi} đã được thêm vào giỏ hàng`,
