@@ -89,7 +89,7 @@ const Home = () => {
       </section>
 
       {/* Trust Badges */}
-      <section className="py-8 bg-cream">
+      <section className={`py-8 ${theme !== "national" ? "bg-cream" : ""}`}>
         <div className="container-wide px-4 md:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
