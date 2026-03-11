@@ -10,6 +10,7 @@ import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import ECard from "./pages/ECard";
 import Checkout from "./pages/Checkout";
+import Story from "./pages/Story";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
