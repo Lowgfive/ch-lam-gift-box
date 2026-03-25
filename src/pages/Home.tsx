@@ -46,7 +46,7 @@ const Home = () => {
           <div className="absolute inset-0">
             <iframe
               className="w-full h-full"
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0&showinfo=0"
+              src="https://www.youtube.com/embed/ZHETsUjETyY?autoplay=0&rel=0&showinfo=0"
               title="Video giới thiệu Lam Nhí"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
